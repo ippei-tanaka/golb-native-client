@@ -4,7 +4,7 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableNativeFeedback
+    TouchableHighlight
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -14,13 +14,15 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#559922',
         width: '100%',
-        height: 50,
-        padding: 10
+        height: '100%',
+        flexDirection: 'row',
+        alignItems: 'center'
     },
 
     icon: {
         color: '#ffffff',
-        fontSize: 30
+        fontSize: 30,
+        padding: 10
     }
 });
 
@@ -28,10 +30,10 @@ export default ({onPressBarButton}) =>
 {
     return (
         <View style={styles.container}>
-            <TouchableNativeFeedback
+            <TouchableHighlight
                 onPress={onPressBarButton}>
                 <Icon name="bars" style={styles.icon}/>
-            </TouchableNativeFeedback>
+            </TouchableHighlight>
         </View>
     );
 }

@@ -1,11 +1,17 @@
 import React, {Component} from 'react';
+
 import {
     StyleSheet,
     Text,
     View,
-    TouchableNativeFeedback
+    TouchableHighlight
 } from 'react-native';
+
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+import {
+    withRouter
+} from 'react-router-native';
 
 const styles = StyleSheet.create({
     
@@ -39,40 +45,74 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ({width = 250}) =>
+class NavigationList extends Component
 {
-    return (
-        <View style={{width, ...StyleSheet.flatten(styles.container)}}>
-            <TouchableNativeFeedback>
-                <View style={styles.buttonContent}>
-                    <Icon name="home" style={styles.icon}/>
-                    <Text style={styles.label}>Home</Text>
-                </View>
-            </TouchableNativeFeedback>
-            <TouchableNativeFeedback>
-                <View style={styles.buttonContent}>
-                    <Icon name="newspaper-o" style={styles.icon}/>
-                    <Text style={styles.label}>Posts</Text>
-                </View>
-            </TouchableNativeFeedback>
-            <TouchableNativeFeedback>
-                <View style={styles.buttonContent}>
-                    <Icon name="users" style={styles.icon}/>
-                    <Text style={styles.label}>Users</Text>
-                </View>
-            </TouchableNativeFeedback>
-            <TouchableNativeFeedback>
-                <View style={styles.buttonContent}>
-                    <Icon name="object-group" style={styles.icon}/>
-                    <Text style={styles.label}>Categories</Text>
-                </View>
-            </TouchableNativeFeedback>
-            <TouchableNativeFeedback>
-                <View style={styles.buttonContent}>
-                    <Icon name="gear" style={styles.icon}/>
-                    <Text style={styles.label}>Settings</Text>
-                </View>
-            </TouchableNativeFeedback>
-        </View>
-    );
+    render ()
+    {
+        const {width, onPress} = this.props;
+
+        return (
+            <View style={{width, ...StyleSheet.flatten(styles.container)}}>
+                <NaviButton
+                    label="Home"
+                    path="/"
+                    iconName="home"
+                    onPress={onPress} />
+                <NaviButton
+                    label="Posts"
+                    path="/posts"
+                    iconName="newspaper-o"
+                    onPress={onPress} />
+                <NaviButton
+                    label="Users"
+                    path="/users"
+                    iconName="users"
+                    onPress={onPress} />
+                <NaviButton
+                    label="Categories"
+                    path="/categories"
+                    iconName="object-group"
+                    onPress={onPress} />
+                <NaviButton
+                    label="Settings"
+                    path="/settings"
+                    iconName="gear"
+                    onPress={onPress} />
+            </View>
+        );
+    }
 }
+
+const _NaviButton = ({iconName, label, path, onPress, history}) =>
+{
+    let prevented = false;
+
+    const event = {
+        path,
+        label,
+        preventDefault: () => { prevented = true }
+    };
+
+    const onPressHandler = () =>
+    {
+        onPress(event);
+
+        if (!prevented)
+        {
+            history.push(path);
+        }
+    };
+
+    return (
+        <TouchableHighlight onPress={onPressHandler}>
+            <View style={styles.buttonContent}>
+                <Icon name={iconName} style={styles.icon}/>
+                <Text style={styles.label}>{label}</Text>
+            </View>
+        </TouchableHighlight>
+    );
+};
+
+const NaviButton = withRouter(_NaviButton);
+
+export default NavigationList;

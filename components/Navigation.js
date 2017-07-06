@@ -45,14 +45,18 @@ export default class Navigation extends Component
 
     render ()
     {
+        const {onPressNaviButton} = this.props;
+
         return (
             <Animated.View
                 style={{
+                    flex: 1,
+                    position: 'absolute',
                     width: WIDTH,
                     height: '100%',
                     left: this.state.offsetLeft
                 }}>
-                <NavigationList />
+                <NavigationList onPress={onPressNaviButton} />
             </Animated.View>
         );
     }
